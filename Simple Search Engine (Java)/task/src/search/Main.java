@@ -6,6 +6,8 @@ import java.util.*;
 
 public class Main {
 
+    static boolean exitFlag = false;
+
     static String[] dataset = null;
 
     public static void main(String[] args) {
@@ -13,10 +15,9 @@ public class Main {
         Map<String, ArrayList<Integer>> invertedIndex = new HashMap<>();
 
         initialize(args, invertedIndex);
-        int option = -1;
-        while (option != 0) {
-            option = menu(scanner);
-            process(dataset, invertedIndex, scanner, option);
+        while (!exitFlag) {
+            int option = handleOptionMenu(scanner);
+            runApplication(dataset, invertedIndex, scanner, option);
         }
         end(scanner);
     }
@@ -53,14 +54,14 @@ public class Main {
         return invertedIndex.getOrDefault(query.toLowerCase(), new ArrayList<>());
     }
 
-    public static int menu(Scanner scanner) {
+    public static int handleOptionMenu(Scanner scanner) {
         System.out.println("1. Search Information.");
         System.out.println("2. Print all data.");
         System.out.println("0. Exit");
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public static void process(String[] dataset, Map<String, ArrayList<Integer>> invertedIndex, Scanner scanner, int option) {
+    public static void runApplication(String[] dataset, Map<String, ArrayList<Integer>> invertedIndex, Scanner scanner, int option) {
         switch (option) {
             case 1:
                 String searchType = scanner.nextLine();
@@ -70,6 +71,7 @@ public class Main {
                 printAll(dataset);
                 break;
             case 0:
+                exitFlag = true;
                 break;
             default:
                 System.out.println("Incorrect option! Try Again.");
